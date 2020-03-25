@@ -1,0 +1,260 @@
+<!doctype html>
+<!-- 
+Project Gorgon Survey Help Tool
+This document is public domain, and no rights are reserved. There is no warranty. Use at your own risk.
+-->
+<html lang="en">
+  <head profile="http://www.w3.org/2005/10/profile>
+    <link rel="icon" type="image/png" href="http://www.defenestration.co/pg/surveying/dorf_favicon.png">
+    <link rel="shortcut icon" type="image/png" href="http://www.defenestration.co/pg/surveying/dorf_favicon.png">
+    
+    <!-- Required bootstrap meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-157507077-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'UA-157507077-1');
+    </script>
+
+    <title>Project Gorgon Survey Helper</title>
+  </head>
+  <body >
+    <div class="container-fluid">
+      <h1>Project Gorgon Survey Helper</h1>
+  
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#instructions">Introduction</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#map">Map</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#chatlogs">Chat Logs</a></li>
+      </ul>
+      
+      <div class="tab-content">
+
+        <!-- Instructions Tab -->
+        <div id="instructions" class="container-fluid tab-pane active">
+          <h4><font color=red>Is this totally broken and wrong?</font></h4>
+          Possibly! This supports motherlodes now. Using this tool could possibly cause your pets to explode.<br><br>
+          <h3>Hi!</h3>
+          <p>Make sure you're playing <a href="https://projectgorgon.com/" target="_blank">Project Gorgon</a>. If not, you're missing out and also this tool will be marginally less useful.</p>
+          <h4>Okay, So What the Heck?</h4>
+          <p>Surveying can be a lot of work, plus you want to get the bonuses for rapidly finding surveys. Some players organize them into quadrants or sort them in their inventory to make the run easier. 
+            This tool is a little different. It helps you make a map of the surveys in the order they are currently in your inventory.</p>
+          <h5>Is This Cheating?</h5>
+          <p>Nope. We asked. (This tool started out as a piece of plastic taped to the monitor and a red dry-erase monitor, before it gradually metastasized into javascript.)</p>
+          <h5>How Does This Work?</h5>
+          <p>Surveys are logged to chat logs. Load them into this tool to find the locations of your surveys and see them on a map.</p>
+          <p>Under the Settings menu, in the "Special" section, add "LogChat" to your special settings. There are instructions there.</p>
+          <p>You'll need to find your chat logs to load them into this tool. On Windows, that's a place like %APPDATA%\..\LocalLow\Elder Game\Project Gorgon\ChatLogs</p>
+          <p>Head over to the Map tab to get started!</p>
+          <h5>Who Are You and Why Make This?</h5>
+          <p style="margin-bottom: 60px">This arguably helpful tool is brought to you by one or more of the pathologically helpful folks in the 
+            <span style="position: relative;"><a href="https://www.rowentrading.com/" target="_blank">Rowen Trading Guild<img src="rowen_icon.png" style="position: absolute; top: 1.5em; left: 0px; height: 48px; width: 48px"></a></span>
+            and maybe also the <a href="http://wiki.projectgorgon.com/wiki/%22Title:_%27Unwanted_Child_of_Ormorek%27%22" target="_blank">Church of Ormorek, <img src="dorf.png" style="background-color: #4d8153; padding: 3px"> Reconstituted.</a></p>
+          <p>This tool does not upload any data to the internet. It runs entirely in your web browser. Spying on you would cost money, anyway.</p>
+          <h5>Aaaahhh! Help!</h5>
+          <p>Boy, don't I know it. <a href="https://forum.projectgorgon.com/showthread.php?2201-PG-Survey-Helper-Tool!" target="_blank">Post a question or comment on the Project Gorgon Forum thread</a> or and I'll try to help.</p>
+        </div>
+
+        <!-- Map Tab -->
+        <div id="map" class="container-fluid tab-pane fade">
+          <div class="row">
+            <div class="col-sm-auto">
+              <div class="row">
+                <div class="col-sm-auto align-self-center">
+                  Zone: 
+                </div>
+                <div class="col-sm-auto">
+                  <select class="form-control" id="zone_select" style="width: 400px">
+                    <option value="Eltibule">Eltibule</option>
+                    <option value="Ilmari">Ilmari</option>
+                    <option value="Kur Mountains">Kur Mountains</option>
+                    <option value="Serbule" selected>Serbule</option>
+                    <option value="Serbule Hills">Serbule Hills</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-auto" style="position: relative; padding-left: 15px;">
+                  <img src="serbule_map.png" class="map_img img-fluid" alt="Zone Map" id="zone_map" style="padding: 0px;">
+                  <img src="dorf.png" id="player_icon" class="transparent_icon draggable ui-widget-content">
+                  <img src="dorf.png" id="player_icon_motherlode_1" class="transparent_icon draggable ui-widget-content">
+                  <img src="dorf.png" id="player_icon_motherlode_2" class="transparent_icon draggable ui-widget-content">
+                  <span id="regular_survey_pins"></span>
+                  <span id="motherlode_survey_pins"></span>
+                  <span id="player_icon_motherlode_1_label" class="survey_dot_label">A</span>
+                  <span id="player_icon_motherlode_2_label" class="survey_dot_label">B</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-auto">
+              <h5>Optional Renumbering:</h5>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="renumberSurveys">
+                <label class="custom-control-label" for="renumberSurveys"> Check to renumber surveys, removing the ones that are toggled. (Regular surveys only)</label>
+              </div>
+              <br>  
+              <h5>Helpful Surveying Checklist:</h5>
+              <ol>
+                <li>Check all your surveys, one at a time. Savor the clicking.</li>
+                <li><img src="dorf.png" style="background-color: #4d8153; padding: 3px"> Drag this famous dwarf so their nose is centered on the position where you checked the surveys.
+                  <span id="extra_motherlode_instructions"><br>For motherlodes, place each marker where you performed that group of surveys.</span>
+                </li>
+                <li>Put your chat logs in the Chat Logs tab and click on the Find Survey Locations button.</li>
+                <li>Back here, there should be numbered red dots everywhere, tantalizing but also kinda taunting.</li>
+                <li>Click and drag the bottom or right side of the map to resize it if desired.</li>
+                <li>Say a brief prayer to <a href="http://wiki.projectgorgon.com/wiki/Ormorek" target="_blank">Ormorek</a>, like "I need a beer."</li>
+                <li>Sort of think about the route you want to take.</li>
+                <li>Don't think too hard about your other life decisions.</li>
+                <li>Survey away!
+                <ul>
+                  <li>Click the survey positions to toggle their color if it helps to track where you've been.
+                </ul>
+              </ol>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Logs Tab -->
+        <div id="chatlogs" class="container-fluid tab-pane fade">
+          <div class="row room_below">
+            <div class="col-sm-auto align-self-center">
+              Survey Type: 
+            </div>
+            <div class="col-sm-auto">
+              <select class="form-control" id="survey_type_select" style="width: 400px">
+                <option value="regular">Regular Map</option>
+                <option value="motherlode">Motherlode</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-auto">
+              <button type="button" class="btn btn-primary" id="clear_log">Clear</button>
+              <button type="button" class="btn btn-primary" id="parse_log">Find Survey Locations</button><br>
+            </div>
+            <div class="col-sm-auto align-self-center">
+              <span id="regular_parse_results" class="align-self-center">0 Surveys Found.</span>
+              <span id="motherlode_parse_results" class="align-self-center">0 Surveys performed. Position map markers to locate them.</span>
+            </div>
+          </div>
+          <div class="row collapse" id="regular_survey_input">
+            <div class="col">
+              <label for="chat_log_text_area">Paste Chat Logs Here:</label>
+              <textarea class="form-control " id="chat_log_text_area" rows="30">
+19-07-04 18:32:50	[NPC Chatter] Phil: Hello fellow living beings! Would either of you care to purchase any .... fruit? Or .... um, rocks?
+19-07-04 18:32:55	[NPC Chatter] Blanche: A mummy! In town? Quick, someone call Velkort!
+19-07-04 18:33:00	[NPC Chatter] Phil: No, no! I'm not a mummy. I'm just wearing bandages because I have, um, leprosy. 
+19-07-04 18:33:05	[NPC Chatter] Rita: Ewww, gross, and you're selling fruit? Yuck, no. Go see Marna for a curative.
+19-07-04 18:33:10	[NPC Chatter] Phil: Oh, okay. I'll definitely go do that. Good bye!
+19-07-04 18:33:15	[NPC Chatter] Blanche: That was totally a mummy. What are undead doing in town?
+19-07-04 18:33:20	[NPC Chatter] Rita: I've never thought about it before, but do you think undead could be good in bed?
+19-07-04 18:33:25	[NPC Chatter] Blanche: I'm going to regret asking this, but why would you even think that?
+19-07-04 18:33:30	[NPC Chatter] Rita: Well, they're animated by magic, right? Would they ever get tired?
+19-07-04 18:33:35	[NPC Chatter] Blanche: I'm just going to pretend we're not having this conversation.
+19-07-04 18:33:42	[Global] Teloch: time for the ultimate dad joke....
+19-07-04 18:33:50	[Global] ForteFerrus: My body is ready.
+19-07-42 18:33:54	[Status] The Rubywall Crystal is 654m east and 47m south.
+19-07-04 18:33:58	[Global] Malechna: This is the greatest day ever
+19-07-04 18:34:06	[Global] Teloch: steak puns, thats a rare medium done well
+19-07-04 18:34:13	[Global] Teloch: *bows*
+19-07-04 18:34:17	[Global] Malechna: ;oo_oo
+19-07-04 18:34:18	[Global] ForteFerrus: ...
+19-07-04 18:34:33	[Global] ForteFerrus: *Cackles*
+19-07-04 18:34:34	[Status] The Rubywall Crystal is 584m east and 57m south.
+19-07-04 18:34:36	[Global] SausageJavelins: *explodes*
+19-07-04 18:34:50	[Global] Teloch: my father used to say for like 20 years every time we had steak
+19-07-04 18:34:53	[Global] Malechna: Hehehe
+19-07-04 18:35:29	[Global] Teloch: heheh  i love puns
+19-07-04 18:35:37	[Global] Malechna: me too
+19-07-04 18:35:44	[Global] Seya: Me, three
+19-07-04 18:35:51	[Global] ForteFerrus: Me four.
+19-07-04 18:35:52	[Global] SausageJavelins: your pain is our gain now. thank you for flying Airetsetsu
+19-07-04 18:35:57	[Status] The Rubywall Crystal is 723m east and 153m north.
+19-07-04 18:36:02	[Global] Teloch: HHAHAHAHAH
+19-07-04 18:36:09	[Global] Seya: LOL
+19-07-04 18:36:10	[Global] Teloch: Arisetsu Airlines
+19-07-04 18:36:17	[Global] ForteFerrus: oooooooh
+19-07-04 18:36:22	[Global] Seya: Fly the Priestly skies
+19-07-04 18:36:29	[Status] The Rubywall Crystal is 211m west and 415m south.
+19-07-04 18:36:35	[Global] Malechna: *crashes into Drunken Chartok
+19-07-04 18:36:52	[Global] Chartok: lol uh...
+              </textarea>
+            </div>
+          </div>
+          <div class="row collapse" id="motherlode_survey_input">
+            <div class="col">
+              <label for="motherlode_log_area_1">Location A Chat Logs: (Or just the distances)</label>
+              <textarea class="form-control " id="motherlode_log_area_1" rows="10">
+19-09-02 04:34:20	[Status] The treasure is 124 meters from here.
+19-09-02 04:34:20	[Status] The treasure is 1024 meters from here.
+800
+              </textarea>
+              <label for="motherlode_log_area_2">Location B Chat Logs: (Or just the distances)</label>
+              <textarea class="form-control " id="motherlode_log_area_2" rows="10">
+19-09-02 04:34:20	[Status] The treasure is 560 meters from here.
+19-09-02 04:34:20	[Status] The treasure is 256 meters from here.
+600
+              </textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+  <script src="survey_helper.js"></script>
+  <style>
+    div.room_below {
+      padding-bottom: 15px;
+    }
+    
+    .tab-pane {
+      padding-top: 20px;
+    }
+    
+    .survey_dot {
+      height: 5px;
+      width: 5px;
+      background-color: #FF0000;
+      border-radius: 50%;
+      display: inline-block;
+      position: absolute;
+    }
+    
+    .survey_dot_label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #FF0000;
+      position: absolute;
+    }
+    
+    .transparent_icon {
+      background-color: transparent;
+      border: none;
+      display: inline-block;
+      position: absolute;
+    }
+    
+    .map_img {
+      width: 650px;
+      height: 650px;
+      background-color: #707070;
+    }
+  </style>
+</html>
