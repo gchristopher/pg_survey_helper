@@ -22,19 +22,19 @@ map_sizes["Serbule"] = [2382, 2488];
 map_sizes["Serbule Hills"] = [2748, 2668];
 
 var map_images = {};
-map_images["Eltibule"] = 'eltibule_map.png';
-map_images["Ilmari"] = 'ilmari_map.png';
-map_images["Kur Mountains"] = 'kur_mountains_map.png';
-map_images["Serbule"] = 'serbule_map.png';
-map_images["Serbule Hills"] = 'serbule_hills_map.png';
+map_images["Eltibule"] = 'images/eltibule_map.png';
+map_images["Ilmari"] = 'images/ilmari_map.png';
+map_images["Kur Mountains"] = 'images/kur_mountains_map.png';
+map_images["Serbule"] = 'images/serbule_map.png';
+map_images["Serbule Hills"] = 'images/serbule_hills_map.png';
 
 
 var player_icons = {};
-player_icons["Eltibule"] = 'dorf.png';
-player_icons["Ilmari"] = 'dorf.png';
-player_icons["Kur Mountains"] = 'cold_dorf.png';
-player_icons["Serbule"] = 'dorf.png';
-player_icons["Serbule Hills"] = 'dorf.png';
+player_icons["Eltibule"] = 'images/dorf.png';
+player_icons["Ilmari"] = 'images/dorf.png';
+player_icons["Kur Mountains"] = 'images/cold_dorf.png';
+player_icons["Serbule"] = 'images/dorf.png';
+player_icons["Serbule Hills"] = 'images/dorf.png';
 
 // Player position is [0.0 - 1.0] relative to the map edges.
 // [0] = Regular survey location, [1] = Motherlode position 1, [2] = Motherlode position 2
